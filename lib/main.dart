@@ -14,6 +14,10 @@ class FlashcardsState extends ChangeNotifier {
     flashcards.add(flashcard);
     notifyListeners();
   }
+  void removeFlashcard(String term) {
+    flashcards.removeWhere((flashcard) => flashcard.term == term);
+    notifyListeners();
+  }
 }
 
 void main() {
@@ -32,12 +36,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flashcards',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flashcards Home Page'),
+      home: const MyHomePage(title: 'Flashcards'),
     );
   }
 }
@@ -56,6 +61,7 @@ class MyHomePage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(title),
+          centerTitle: true,
         ),
         body: Center(
           child: Padding(
@@ -92,7 +98,6 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-//TODO support a delete button in here
 class FlashcardRow extends StatelessWidget {
   final String term;
   final String definition;
@@ -101,6 +106,7 @@ class FlashcardRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<FlashcardsState>();
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondaryContainer,
@@ -109,10 +115,18 @@ class FlashcardRow extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               "$term  |  $definition",
               style: TextStyle(color: Colors.white),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              color: Colors.red,
+              onPressed: () {
+                appState.removeFlashcard(term);
+              },
             ),
           ],
         ),
