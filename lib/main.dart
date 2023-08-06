@@ -1,4 +1,5 @@
 import 'package:flashcards/flashcard_data.dart';
+import 'package:flashcards/quiz_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -83,16 +84,32 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const AddFlashcardPage()));
-          },
-          tooltip: 'Add Flashcard',
-          child: const Icon(Icons.add),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const QuizViewPage()),
+                );
+              },
+              tooltip: 'Quiz View',
+              child: const Icon(Icons.rectangle),
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AddFlashcardPage()),
+                );
+              },
+              tooltip: 'Add Flashcard',
+              child: const Icon(Icons.add),
+            ),
+          ],
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
