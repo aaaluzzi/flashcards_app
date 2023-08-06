@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flashcards',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flashcards Home Page'),
@@ -58,12 +58,23 @@ class MyHomePage extends StatelessWidget {
           title: Text(title),
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (var flashcard in appState.flashcards)
-                Text("${flashcard.term} - ${flashcard.definition}"),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                for (var flashcard in appState.flashcards)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FlashcardRow(
+                        term: flashcard.term,
+                        definition: flashcard.definition,
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -75,6 +86,35 @@ class MyHomePage extends StatelessWidget {
           },
           tooltip: 'Add Flashcard',
           child: const Icon(Icons.add),
+        ),
+      ),
+    );
+  }
+}
+
+//TODO support a delete button in here
+class FlashcardRow extends StatelessWidget {
+  final String term;
+  final String definition;
+
+  const FlashcardRow({super.key, required this.term, required this.definition});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.secondaryContainer,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            Text(
+              "$term  |  $definition",
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
         ),
       ),
     );
