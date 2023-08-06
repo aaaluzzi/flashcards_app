@@ -2,6 +2,8 @@ import 'package:flashcards/flashcard_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'add_flashcard.dart';
+
 class FlashcardsState extends ChangeNotifier {
   final List<FlashcardData> flashcards = [
     FlashcardData("term1", "definition1"),
@@ -66,24 +68,14 @@ class MyHomePage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddFlashcardPage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AddFlashcardPage()));
           },
           tooltip: 'Add Flashcard',
           child: const Icon(Icons.add),
         ),
-      ),
-    );
-  }
-}
-
-class AddFlashcardPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Add New Flashcard"),
       ),
     );
   }
