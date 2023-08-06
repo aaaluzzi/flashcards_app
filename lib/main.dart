@@ -64,6 +64,26 @@ class MyHomePage extends StatelessWidget {
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddFlashcardPage()));
+          },
+          tooltip: 'Add Flashcard',
+          child: const Icon(Icons.add),
+        ),
+      ),
+    );
+  }
+}
+
+class AddFlashcardPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text("Add New Flashcard"),
       ),
     );
   }
