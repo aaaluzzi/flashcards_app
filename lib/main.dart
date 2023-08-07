@@ -15,6 +15,7 @@ class FlashcardsState extends ChangeNotifier {
     flashcards.add(flashcard);
     notifyListeners();
   }
+
   void removeFlashcard(String term) {
     flashcards.removeWhere((flashcard) => flashcard.term == term);
     notifyListeners();
@@ -60,13 +61,13 @@ class MyHomePage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(title),
           centerTitle: true,
         ),
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
                 for (var flashcard in appState.flashcards)
@@ -84,30 +85,35 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const QuizViewPage()),
-                );
-              },
-              tooltip: 'Quiz View',
-              child: const Icon(Icons.rectangle),
-            ),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AddFlashcardPage()),
-                );
-              },
-              tooltip: 'Add Flashcard',
-              child: const Icon(Icons.add),
-            ),
-          ],
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const QuizViewPage()),
+                  );
+                },
+                tooltip: 'Quiz View',
+                child: const Icon(Icons.rectangle),
+              ),
+              FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AddFlashcardPage()),
+                  );
+                },
+                tooltip: 'Add Flashcard',
+                child: const Icon(Icons.add),
+              ),
+            ],
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
@@ -140,7 +146,7 @@ class FlashcardRow extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.delete),
-              color: Colors.red,
+              color: Colors.white,
               onPressed: () {
                 appState.removeFlashcard(term);
               },
