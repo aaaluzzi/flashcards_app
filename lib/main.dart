@@ -77,7 +77,7 @@ class MyHomePage extends StatelessWidget {
                         term: flashcard.term,
                         definition: flashcard.definition,
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                     ],
                   ),
               ],
@@ -136,10 +136,10 @@ class FlashcardRow extends StatelessWidget {
           children: [
             Text(
               "$term  |  $definition",
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               color: Colors.red,
               onPressed: () {
                 appState.removeFlashcard(term);
