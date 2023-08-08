@@ -20,6 +20,15 @@ class FlashcardsState extends ChangeNotifier {
     flashcards.removeWhere((flashcard) => flashcard.term == term);
     notifyListeners();
   }
+
+  void updateFlashcard(String term, String newTerm, String newDefinition) {
+    final flashcardIndex = flashcards.indexWhere((flashcard) =>
+    flashcard.term == term);
+    if (flashcardIndex != -1) {
+      flashcards[flashcardIndex] = FlashcardData(newTerm, newDefinition);
+      notifyListeners();
+    }
+  }
 }
 
 void main() {
@@ -34,7 +43,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -150,8 +158,54 @@ class FlashcardRow extends StatelessWidget {
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.delete),
+              icon: const Icon(Icons.edit),
               color: Colors.white,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    String newTerm = term;
+                    String newDefinition = definition;
+
+                    return AlertDialog(
+                      title: const Text('Edit Flashcard'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextFormField(
+                            initialValue: term,
+                            onChanged: (value) => newTerm = value,
+                            decoration: const InputDecoration(labelText: 'Term'),
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            initialValue: definition,
+                            onChanged: (value) => newDefinition = value,
+                            decoration: const InputDecoration(labelText: 'Definition'),
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            appState.updateFlashcard(term, newTerm, newDefinition);
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Save'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete),
+              color: Colors.deepOrangeAccent,
               onPressed: () {
                 appState.removeFlashcard(term);
               },
