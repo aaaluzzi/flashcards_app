@@ -2,7 +2,6 @@ import 'package:flashcards/flashcard_data.dart';
 import 'package:flashcards/quiz_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'add_flashcard.dart';
 
 class FlashcardsState extends ChangeNotifier {
@@ -77,7 +76,7 @@ class MyHomePage extends StatelessWidget {
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
+            child: ListView(
               children: [
                 for (var flashcard in appState.flashcards)
                   Column(
@@ -94,37 +93,92 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.blueGrey,
+          shape: const CircularNotchedRectangle(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const QuizViewPage()),
-                  );
-                },
-                tooltip: 'Quiz View',
-                child: const Icon(Icons.rectangle),
+              const SizedBox(height: 3),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.rectangle),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const QuizViewPage()),
+                            );
+                          },
+                        ),
+                        const Text(
+                          'Quiz View',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.menu),
+                          color: Colors.white,
+                          onPressed: () {
+                            // TO DO
+                          },
+                        ),
+                        const Text(
+                          'Show Groups',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.add),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const AddFlashcardPage()),
+                            );
+                          },
+                        ),
+                        const Text(
+                          'Add Flashcard',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AddFlashcardPage()),
-                  );
-                },
-                tooltip: 'Add Flashcard',
-                child: const Icon(Icons.add),
-              ),
+              const SizedBox(height: 10),
             ],
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }

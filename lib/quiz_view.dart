@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'dart:math';
 import 'main.dart';
 
 class QuizViewPage extends StatefulWidget {
@@ -13,10 +13,31 @@ class QuizViewPage extends StatefulWidget {
 class _QuizViewPageState extends State<QuizViewPage> {
   int currentIndex = 0;
   bool showDefinition = false;
+  List<int> visitedIndices = [];
 
   void toggleShowDefinition() {
     setState(() {
       showDefinition = !showDefinition;
+    });
+  }
+
+  void toggleRandomFlashcard() {
+    var appState = context.read<FlashcardsState>();
+    final flashcards = appState.flashcards;
+
+    if (visitedIndices.length == flashcards.length) {
+      visitedIndices.clear();
+    }
+
+    int randomIndex;
+    do {
+      randomIndex = Random().nextInt(flashcards.length);
+    } while (visitedIndices.contains(randomIndex));
+
+    setState(() {
+      currentIndex = randomIndex;
+      visitedIndices.add(randomIndex);
+      showDefinition = false;
     });
   }
 
@@ -90,6 +111,10 @@ class _QuizViewPageState extends State<QuizViewPage> {
                       });
                     },
                     child: const Text('Next'),
+                  ),
+                  ElevatedButton(
+                    onPressed: toggleRandomFlashcard,
+                    child: const Text('Randomize'),
                   ),
                 ],
               ),
