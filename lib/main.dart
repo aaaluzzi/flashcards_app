@@ -59,6 +59,7 @@ class MyHomePage extends StatelessWidget {
     var appState = context.watch<FlashcardsState>();
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
@@ -140,9 +141,13 @@ class FlashcardRow extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "$term  |  $definition",
-              style: const TextStyle(color: Colors.white),
+            Expanded(
+              child: Text(
+                "$term  |  $definition",
+                style: const TextStyle(color: Colors.white),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
             IconButton(
               icon: const Icon(Icons.delete),
