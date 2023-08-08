@@ -37,7 +37,9 @@ class _QuizViewPageState extends State<QuizViewPage> {
     final currentFlashcard = flashcards[currentIndex];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Quiz View')),
+      appBar: AppBar(
+          title: const Text('Quiz View'),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -46,14 +48,19 @@ class _QuizViewPageState extends State<QuizViewPage> {
             children: [
               GestureDetector(
                 onTap: toggleShowDefinition,
-                child: Card(
-                  elevation: 4,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    child: Center(
-                      child: Text(
-                        showDefinition ? currentFlashcard.definition : currentFlashcard.term,
-                        style: const TextStyle(fontSize: 18),
+                child: AspectRatio(
+                  aspectRatio: 8 / 5,
+                  child: Card(
+                    elevation: 4,
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Center(
+                        child: Text(
+                          showDefinition
+                              ? currentFlashcard.definition
+                              : currentFlashcard.term,
+                          style: const TextStyle(fontSize: 18),
+                        ),
                       ),
                     ),
                   ),
@@ -98,4 +105,3 @@ class _QuizViewPageState extends State<QuizViewPage> {
     );
   }
 }
-
