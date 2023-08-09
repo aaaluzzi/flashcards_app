@@ -3,12 +3,14 @@ import 'package:flashcards/quiz_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'add_flashcard.dart';
+import 'group_view_data.dart';
 
 class FlashcardsState extends ChangeNotifier {
   final List<FlashcardData> flashcards = [
     FlashcardData("term1", "definition1"),
     FlashcardData("term2", "definition2")
   ];
+  final List<GroupData> groups = [];
 
   void add(FlashcardData flashcard) {
     flashcards.add(flashcard);
@@ -27,6 +29,11 @@ class FlashcardsState extends ChangeNotifier {
       flashcards[flashcardIndex] = FlashcardData(newTerm, newDefinition);
       notifyListeners();
     }
+  }
+
+  void addGroup(GroupData group) {
+    groups.add(group);
+    notifyListeners();
   }
 }
 
@@ -134,7 +141,57 @@ class MyHomePage extends StatelessWidget {
                           icon: const Icon(Icons.menu),
                           color: Colors.white,
                           onPressed: () {
-                            // TO DO
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                String newGroupName = '';
+
+                                return AlertDialog(
+                                  title: const Text('Groups'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      DropdownButton<GroupData>(
+                                        items: appState.groups.map((group) {
+                                          return DropdownMenuItem<GroupData>(
+                                            value: group,
+                                            child: Text(group.name),
+                                          );
+                                        }).toList(),
+                                        onChanged: (selectedGroup) {
+                                        },
+                                      ),
+                                      const SizedBox(height: 16),
+                                      TextFormField(
+                                        onChanged: (value) {
+                                          newGroupName = value;
+                                        },
+                                        decoration: const InputDecoration(labelText: 'New Group Name'),
+                                      ),
+                                    ],
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Close'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        if (newGroupName.isNotEmpty) {
+                                          final newGroup = GroupData(
+                                            id: DateTime.now().toString(),
+                                            name: newGroupName,
+                                          );
+                                          appState.addGroup(newGroup);
+                                          Navigator.pop(context);
+                                        }
+                                      },
+                                      child: const Text('Create Group'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                         ),
                         const Text(

@@ -14,6 +14,7 @@ class _QuizViewPageState extends State<QuizViewPage> {
   int currentIndex = 0;
   bool showDefinition = false;
   List<int> visitedIndices = [];
+  String? selectedGroupId;
 
   void toggleShowDefinition() {
     setState(() {
@@ -122,6 +123,31 @@ class _QuizViewPageState extends State<QuizViewPage> {
               ElevatedButton(
                 onPressed: toggleShowDefinition,
                 child: Text(showDefinition ? 'Show Term' : 'Show Definition'),
+              ),
+              const SizedBox(height: 10),
+              DropdownButton<String>(
+                value: selectedGroupId,
+                hint: const Text('Select a group'),
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedGroupId = newValue;
+                    currentIndex = 0;
+                    visitedIndices.clear();
+                    showDefinition = false;
+                  });
+                },
+                items: [
+                  const DropdownMenuItem<String>(
+                    value: null,
+                    child: Text('All Groups'),
+                  ),
+                  ...appState.groups.map((group) {
+                    return DropdownMenuItem<String>(
+                      value: group.id,
+                      child: Text(group.name),
+                    );
+                  }).toList(),
+                ],
               ),
             ],
           ),
