@@ -2,6 +2,7 @@ import 'package:flashcards/flashcard_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'group_view_data.dart';
 import 'main.dart';
 
 class AddFlashcardPage extends StatelessWidget {
@@ -17,8 +18,10 @@ class AddFlashcardPage extends StatelessWidget {
       ),
       body: Center(
         child: AddFlashcardForm(
-          onSubmit: (term, definition) {
-            appState.add(FlashcardData(term, definition));
+          onSubmit: (term, definition, selectedGroup) {
+            appState.add(
+              FlashcardData(term, definition, groupId: selectedGroup?.id), // Pass the group ID
+            );
             Navigator.pop(context);
           },
         ),
@@ -28,7 +31,7 @@ class AddFlashcardPage extends StatelessWidget {
 }
 
 class AddFlashcardForm extends StatefulWidget {
-  final void Function(String term, String definition) onSubmit;
+  final void Function(String term, String definition, GroupData? selectedGroup) onSubmit;
 
   const AddFlashcardForm({super.key, required this.onSubmit});
 
@@ -40,16 +43,18 @@ class AddFlashcardFormState extends State<AddFlashcardForm> {
   final _formKey = GlobalKey<FormState>();
   String term = '';
   String definition = '';
+  GroupData? selectedGroup;
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      widget.onSubmit(term, definition);
+      widget.onSubmit(term, definition, selectedGroup);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<FlashcardsState>();
     return Form(
       key: _formKey,
       child: Padding(
@@ -81,6 +86,21 @@ class AddFlashcardFormState extends State<AddFlashcardForm> {
               onSaved: (value) {
                 definition = value!;
               },
+            ),
+            DropdownButton<GroupData>(
+              value: selectedGroup,
+              hint: const Text('Select a group'),
+              onChanged: (newValue) {
+                setState(() {
+                  selectedGroup = newValue;
+                });
+              },
+              items: appState.groups.map((group) {
+                return DropdownMenuItem<GroupData>(
+                  value: group,
+                  child: Text(group.name),
+                );
+              }).toList(),
             ),
             const SizedBox(height: 32),
             ElevatedButton(
